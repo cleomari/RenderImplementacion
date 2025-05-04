@@ -4,12 +4,12 @@ import os
 
 app = Flask(__name__)
 
-# Función para obtener conexión a la base de datos
+# Conexión a la base de datos
 def get_db_connection():
     conn = psycopg2.connect(os.environ['DATABASE_URL'])
     return conn
 
-# Función que se ejecuta al iniciar para crear la tabla si no existe
+# Crear la tabla si no existe
 def init_db():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -22,7 +22,10 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Ruta principal: muestra la lista de tareas
+# 👇 Ejecuta esto SIEMPRE (local y en producción con Gunicorn)
+init_db()
+
+# Ruta principal
 @app.route('/')
 def index():
     conn = get_db_connection()
@@ -32,7 +35,7 @@ def index():
     conn.close()
     return render_template('index.html', tareas=tareas)
 
-# Ruta para agregar una nueva tarea
+# Ruta para agregar tareas
 @app.route('/add', methods=['POST'])
 def add():
     texto = request.form['texto']
@@ -42,8 +45,3 @@ def add():
     conn.commit()
     conn.close()
     return redirect('/')
-
-# Ejecutar la app
-if __name__ == '__main__':
-    init_db()
-    app.run(host='0.0.0.0', port=10000)
