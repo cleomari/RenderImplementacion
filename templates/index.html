@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head><title>Tareas</title></head>
+<body>
+    <h1>Mis Tareas</h1>
+    <form method="POST" action="/add">
+        <input name="texto" placeholder="Nueva tarea" required>
+        <button type="submit">Agregar</button>
+    </form>
+    <ul>
+        {% for tarea in tareas %}
+        <li>{{ tarea[1] }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
