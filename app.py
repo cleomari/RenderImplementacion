@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 def get_db_connection():
-    conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
+    conn = psycopg2.connect(os.environ['DATABASE_URL'])
     return conn
 
 @app.route('/')
@@ -29,4 +29,4 @@ def add():
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=10000)
